@@ -36,7 +36,8 @@ namespace Web.Api.UnitTests.Presenters
 
             // assert
             dynamic data = JsonConvert.DeserializeObject(presenter.ContentResult.Content);
-            Assert.Equal(authToken, data.authtoken.Value);
+            
+            Assert.Equal(authToken, data.authToken.Value);
         }
 
         [Fact]
