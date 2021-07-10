@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Web.Api.Core.Domain.Entities;
 using Web.Api.Infrastructure.Data.Entities;
-
+using Web.Api.Infrastructure.Data.EntityFramework.Entities;
 
 namespace Web.Api.Infrastructure.Data.Mapping
 {
@@ -11,6 +11,9 @@ namespace Web.Api.Infrastructure.Data.Mapping
         {
             CreateMap<User, AppUser>().ConstructUsing(u => new AppUser {Id=u.Id, FirstName = u.FirstName, LastName = u.LastName, UserName = u.UserName, PasswordHash = u.PasswordHash});
             CreateMap<AppUser, User>().ConstructUsing(au => new User(au.FirstName, au.LastName, au.Email, au.UserName, au.Id, au.PasswordHash));
+
+            CreateMap<Job, JobEntity>().ConstructUsing(au => new JobEntity(au.Id, (int)au.Type, au.Items));
+
         }
     }
 }

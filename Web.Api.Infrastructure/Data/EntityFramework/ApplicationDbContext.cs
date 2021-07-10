@@ -15,6 +15,23 @@ namespace Web.Api.Infrastructure.Data.EntityFramework
         {
         }
 
+
+        public DbSet<JobEntity> Jobs { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<JobEntity>(entity =>
+            {
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasMaxLength(50);
+                entity.Property(e => e.Items)
+                    .IsRequired();
+            });
+
+            base.OnModelCreating(builder);
+        }
+
         public override int SaveChanges()
         {
             AddAuitInfo();

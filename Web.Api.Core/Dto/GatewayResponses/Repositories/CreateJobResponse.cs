@@ -4,8 +4,8 @@ namespace Web.Api.Core.Dto.GatewayResponses.Repositories
 {
   public sealed class CreateJobResponse : BaseGatewayResponse
   {
-    public string Id { get; }
-    public CreateJobResponse(string id, bool success = false, IEnumerable<Error> errors = null) : base(success, errors)
+    public int Id { get; }
+    public CreateJobResponse(int id, bool success = false, IEnumerable<Error> errors = null) : base(success, errors)
     {
       Id = id;
     }

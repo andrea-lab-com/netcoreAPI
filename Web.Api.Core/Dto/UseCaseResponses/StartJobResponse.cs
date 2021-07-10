@@ -5,7 +5,7 @@ namespace Web.Api.Core.Dto.UseCaseResponses
 {
     public class StartJobResponse : UseCaseResponseMessage 
     {
-        public string Id { get; }
+        public int Id { get; }
         public IEnumerable<string> Errors {  get; }
 
         public StartJobResponse(IEnumerable<string> errors, bool success=false, string message=null) : base(success, message)
@@ -13,7 +13,7 @@ namespace Web.Api.Core.Dto.UseCaseResponses
             Errors = errors;
         }
 
-        public StartJobResponse(string id, bool success = false, string message = null) : base(success, message)
+        public StartJobResponse(int id, bool success = false, string message = null) : base(success, message)
         {
             Id = id;
         }

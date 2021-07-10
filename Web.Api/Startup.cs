@@ -45,10 +45,10 @@ namespace Web.Api
     {
       // Add framework services.
 
-      services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("ApplicationDb"));
+      //services.AddDbContext<ApplicationDbContext>(options =>
+             //   options.UseInMemoryDatabase("ApplicationDb"));
             
-            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), b => b.MigrationsAssembly("Web.Api.Infrastructure")));
+        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), b => b.MigrationsAssembly("Web.Api.Infrastructure")));
 
       // jwt wire up
       // Get options from app settings
@@ -106,12 +106,14 @@ namespace Web.Api
 
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
-      services.AddAutoMapper();
+
+            services.AddAutoMapper();
 
       // Register the Swagger generator, defining 1 or more Swagger documents
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new Info { Title = "CleanAspNetCoreWebAPI", Version = "v1" });
+          c.DescribeAllEnumsAsStrings();
       });
 
       // Now register our services with Autofac container.
@@ -122,6 +124,7 @@ namespace Web.Api
 
       // Presenters
       builder.RegisterType<RegisterUserPresenter>().SingleInstance();
+      builder.RegisterType<StartJobPresenter>().SingleInstance();
       builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
 
       builder.Populate(services);
