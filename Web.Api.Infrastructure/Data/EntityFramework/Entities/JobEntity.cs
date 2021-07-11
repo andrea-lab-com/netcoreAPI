@@ -7,15 +7,13 @@ namespace Web.Api.Infrastructure.Data.EntityFramework.Entities
     public class JobEntity: BaseEntity
     {
 
-        public JobEntity(int id, int type, int items)
+        public JobEntity(int id, int type)
         {
             this.Id = id;
             Type = type;
-            Items = items;
         }
 
         public int Type { get; set; }
-        public int Items { get; set; }
     }
 
 }

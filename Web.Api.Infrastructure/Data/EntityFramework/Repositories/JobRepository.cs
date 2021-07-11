@@ -35,6 +35,17 @@ namespace Web.Api.Infrastructure.Data.EntityFramework.Repositories
 
             try {
                 _applicationDbContext.SaveChanges();
+
+                foreach(JobItem jobItem in job.Items)
+                {
+
+                    var jobItemEntity = _mapper.Map<JobItemEntity>(jobItem);
+                    jobItemEntity.JobId = jobEntity.Id;
+
+                    _applicationDbContext.JobItems.Add(jobItemEntity);
+                }
+
+                _applicationDbContext.SaveChanges();
             } catch (Exception e) {
                 errors.Add(new Error("E001", "Job isn't be added"));
             }

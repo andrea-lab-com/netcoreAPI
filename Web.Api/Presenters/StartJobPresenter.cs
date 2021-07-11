@@ -5,7 +5,7 @@ using Web.Api.Serialization;
 
 namespace Web.Api.Presenters
 {
-    public sealed class StartJobPresenter : IOutputPort<StartJobResponse>
+    public sealed class StartJobPresenter : IOutputPort<StartJobUseCaseResponse>
     {
         public JsonContentResult ContentResult { get; }
 
@@ -14,7 +14,7 @@ namespace Web.Api.Presenters
             ContentResult = new JsonContentResult();
         }
 
-        public void Handle(StartJobResponse response)
+        public void Handle(StartJobUseCaseResponse response)
         {
             ContentResult.StatusCode = (int)(response.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
             ContentResult.Content = JsonSerializer.SerializeObject(response);

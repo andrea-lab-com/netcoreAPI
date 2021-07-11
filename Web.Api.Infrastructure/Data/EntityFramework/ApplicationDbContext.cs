@@ -18,14 +18,25 @@ namespace Web.Api.Infrastructure.Data.EntityFramework
 
         public DbSet<JobEntity> Jobs { get; set; }
 
+        public DbSet<JobItemEntity> JobItems { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<JobEntity>(entity =>
             {
                 entity.Property(e => e.Type)
-                    .IsRequired()
-                    .HasMaxLength(50);
-                entity.Property(e => e.Items)
+                    .IsRequired();
+            });
+
+            builder.Entity<JobItemEntity>(entity =>
+            {
+                entity.Property(e => e.Status)
+                    .IsRequired();
+
+                entity.Property(e => e.DataSourceUrl)
+                    .IsRequired();
+
+                entity.Property(e => e.JobId)
                     .IsRequired();
             });
 

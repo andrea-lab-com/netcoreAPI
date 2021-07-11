@@ -25,6 +25,7 @@ using Web.Api.Infrastructure.Auth;
 using Web.Api.Infrastructure.Data.Entities;
 using Web.Api.Infrastructure.Data.EntityFramework;
 using Web.Api.Presenters;
+using Web.Api.Service;
 
 namespace Web.Api
 {
@@ -109,8 +110,8 @@ namespace Web.Api
 
             services.AddAutoMapper();
 
-      // Register the Swagger generator, defining 1 or more Swagger documents
-      services.AddSwaggerGen(c =>
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new Info { Title = "CleanAspNetCoreWebAPI", Version = "v1" });
           c.DescribeAllEnumsAsStrings();

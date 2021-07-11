@@ -3,7 +3,7 @@ using Web.Api.Core.Dto.UseCaseResponses;
 
 namespace Web.Api.Core.Interfaces.UseCases
 {
-    public interface IStartJobUseCase : IUseCaseRequestHandler<StartJobRequest, StartJobResponse>
+    public interface IStartJobUseCase : IUseCaseRequestHandler<StartJobUseCaseRequest, StartJobUseCaseResponse>
     {
     }
 }
