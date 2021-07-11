@@ -45,8 +45,6 @@ namespace Web.Api.Infrastructure.Data.EntityFramework.Repositories
 
             var errors = new List<Error>();
 
-            var result = _applicationDbContext.JobItems.Where<JobItemEntity>(ji => ji.JobId == jobItem.Id).ToList();
-
             var entity = _applicationDbContext.JobItems.FirstOrDefault(item => item.Id == jobItem.Id);
 
             if (entity != null)

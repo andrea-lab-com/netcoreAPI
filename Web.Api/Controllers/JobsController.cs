@@ -16,12 +16,20 @@ namespace Web.Api.Controllers
     {
         private readonly IStartJobUseCase _startJobUseCase;
         private readonly StartJobPresenter _startJobPresenter;
+
+        private readonly ICheckStatusUseCase _checkStatusUseCase;
+        private readonly CheckStatusPresenter _checkStatusPresenter;
+
         private readonly IMapper _mapper;
 
-        public JobsController(IStartJobUseCase StartJobUseCase, StartJobPresenter StartJobPresenter, IMapper mapper)
+        public JobsController(IStartJobUseCase StartJobUseCase, StartJobPresenter StartJobPresenter, ICheckStatusUseCase CheckStatusUseCase, CheckStatusPresenter CheckStatusPresenter, IMapper mapper)
         {
             _startJobUseCase = StartJobUseCase;
             _startJobPresenter = StartJobPresenter;
+
+            _checkStatusUseCase = CheckStatusUseCase;
+            _checkStatusPresenter = CheckStatusPresenter;
+
             _mapper = mapper;
         }
 
@@ -38,10 +46,18 @@ namespace Web.Api.Controllers
 
             await _startJobUseCase.Handle(new StartJobUseCaseRequest(request.Type, items), _startJobPresenter);
 
-
-
-
             return _startJobPresenter.ContentResult;
         }
+
+        // POST api/Jobs/{id}
+        [HttpGet("{jobId}")]
+        public async Task<ActionResult> CheckStatusJobAsync(int jobId)
+        {
+
+            await _checkStatusUseCase.Handle(new CheckStatusUseCaseRequest(jobId), _checkStatusPresenter);
+
+            return _checkStatusPresenter.ContentResult;
+        }
+
     }
 }

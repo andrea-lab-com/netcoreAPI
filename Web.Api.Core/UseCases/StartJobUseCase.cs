@@ -29,7 +29,7 @@ namespace Web.Api.Core.UseCases
         {
             var response = await _jobRepository.Create(new Job(message.Type, message.Items));
 
-            // Delegate the blog auditing to another task on the threadpool
+            // Delegate the launch JobItem to another task on the threadpool
             _fireForgetRepositoryHandler.Execute(async repository =>
             {
                 var listItems =  repository.List(response.Id).Result.Items;
@@ -39,14 +39,21 @@ namespace Web.Api.Core.UseCases
                 {
                     int num = 200 + _random.Next(700);
 
-                    Domain.Enums.JobItemStatus jobItemStatus = Domain.Enums.JobItemStatus.FAILED; 
-                    if (num < 650) {
-                        jobItemStatus = Domain.Enums.JobItemStatus.PROCESSED;
-                    }
                     // call external Service
                     Thread.Sleep(num);
+                    Domain.Enums.JobItemStatus jobItemStatus = Domain.Enums.JobItemStatus.FAILED;
+                    if (num < 650)
+                    {
+                        jobItemStatus = Domain.Enums.JobItemStatus.PROCESSED;
+                    }
+
+
                     await repository.Update(jobItem, jobItemStatus);
 
+                    if (jobItemStatus == Domain.Enums.JobItemStatus.FAILED && message.Type == Domain.Enums.JobType.BATCH)
+                    {
+                        break;
+                    }
                 }
 
             });

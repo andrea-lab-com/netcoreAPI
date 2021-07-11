@@ -14,6 +14,7 @@ namespace Web.Api.Infrastructure.Data.Mapping
             CreateMap<AppUser, User>().ConstructUsing(au => new User(au.FirstName, au.LastName, au.Email, au.UserName, au.Id, au.PasswordHash));
 
             CreateMap<Job, JobEntity>().ConstructUsing(au => new JobEntity(au.Id, (int)au.Type));
+            CreateMap<JobEntity, Job>().ConstructUsing(au => new Job((JobType)au.Type, null, au.Id));
 
             CreateMap<JobItem, JobItemEntity>().ConstructUsing(au => new JobItemEntity(au.Id, au.JobId, (int)au.Status, au.DataSourceUrl));
             CreateMap<JobItemEntity, JobItem>().ConstructUsing(au => new JobItem(au.JobId, au.DataSourceUrl, (JobItemStatus) au.Status, au.Id));
