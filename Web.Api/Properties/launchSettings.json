@@ -13,6 +13,7 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
+        "SECURITY_KEY": "KkDsLfv0aCVwuANG7gCAUG5L7achkapy",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

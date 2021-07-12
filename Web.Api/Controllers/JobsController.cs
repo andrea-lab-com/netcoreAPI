@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Api.Core.Domain.Entities;
 using Web.Api.Core.Dto.UseCaseRequests;
@@ -11,6 +12,7 @@ using Web.Api.Presenters;
 namespace Web.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class JobsController : ControllerBase
     {

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
@@ -31,10 +34,10 @@ namespace Web.Api
 {
   public class Startup
   {
-    private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH"; // todo: get this from somewhere secure
-    private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+    private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECURITY_KEY")));
 
-    public Startup(IConfiguration configuration)
+
+        public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
     }
@@ -53,46 +56,86 @@ namespace Web.Api
 
       // jwt wire up
       // Get options from app settings
-      var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
 
-      // Configure JwtIssuerOptions
-      services.Configure<JwtIssuerOptions>(options =>
-      {
-        options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-        options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
-        options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
-      });
+      
 
-      var tokenValidationParameters = new TokenValidationParameters
-      {
-        ValidateIssuer = true,
-        ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
 
-        ValidateAudience = true,
-        ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = _signingKey,
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+                opt.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
 
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = _signingKey,
+                        var val = false;
 
-        RequireExpirationTime = false,
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero
-      };
+                        var myIssuer = "http://mysite.com";
+                        var myAudience = "http://myaudience.com";
+                        var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-      services.AddAuthentication(options =>
-      {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                        var tokenHandler = new JwtSecurityTokenHandler();
+                        try
+                        {
+                            tokenHandler.ValidateToken(token, new TokenValidationParameters
+                            {
+                                ValidateIssuerSigningKey = true,
+                                ValidateIssuer = false,
+                                ValidateAudience = false,
+                                ValidIssuer = myIssuer,
+                                ValidAudience = myAudience,
+                                IssuerSigningKey = _signingKey
+                            }, out SecurityToken validatedToken);
+                        }
+                        catch
+                        {
+                            val = false;
+                        }
+                        val = true;
 
-      }).AddJwtBearer(configureOptions =>
-      {
-        configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-        configureOptions.TokenValidationParameters = tokenValidationParameters;
-        configureOptions.SaveToken = true;
-      });
 
-      // add identity
-      var identityBuilder = services.AddIdentityCore<AppUser>(o =>
+                        var queryToken = context.Request.Query["token"].ToString();
+                        if (!string.IsNullOrEmpty(queryToken))
+                        {
+                            context.Token = queryToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1.0", new Info { Title = "CleanAspNetCoreWebApi API v1.0", Version = "v1.0" });
+                // Swagger 2.+ support
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }},
+                };
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+                c.AddSecurityRequirement(security);
+                c.DescribeAllEnumsAsStrings();
+            });
+
+            // add identity
+            var identityBuilder = services.AddIdentityCore<AppUser>(o =>
             {
               // configure identity options
               o.Password.RequireDigit = false;
@@ -108,14 +151,9 @@ namespace Web.Api
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
 
-            services.AddAutoMapper();
+     services.AddAutoMapper();
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc("v1", new Info { Title = "CleanAspNetCoreWebAPI", Version = "v1" });
-          c.DescribeAllEnumsAsStrings();
-      });
+           
 
       // Now register our services with Autofac container.
       var builder = new ContainerBuilder();
@@ -160,17 +198,14 @@ namespace Web.Api
                   });
           });
 
-      // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
-      // specifying the Swagger JSON endpoint.
-      app.UseSwaggerUI(c =>
-      {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CleanAspNetCoreWebAPI V1");
-      });
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Versioned API v1.0");
+            });
 
-      // Enable middleware to serve generated Swagger as a JSON endpoint.
-      app.UseSwagger();
-
-      app.UseMvc();
-    }
+            app.UseAuthentication();
+            app.UseMvc();
+        }
   }
 }
