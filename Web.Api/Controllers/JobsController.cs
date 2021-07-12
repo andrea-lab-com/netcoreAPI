@@ -63,8 +63,8 @@ namespace Web.Api.Controllers
             return _startJobPresenter.ContentResult;
         }
 
-        // GET api/Jobs/{id}
-        [HttpGet("{jobId}")]
+        // GET api/Jobs/CheckStatus/{id}
+        [HttpGet("CheckStatus/{jobId}")]
         public async Task<ActionResult> CheckStatusJobAsync(int jobId)
         {
 

@@ -42,7 +42,7 @@ namespace Web.Api.Core.UseCases
 
 
             // Delegate the launch JobItem to another task on the threadpool
-           /* _fireForgetRepositoryHandler.Execute(async repository =>
+            _fireForgetRepositoryHandler.Execute(async repository =>
             {
                 var listItems =  repository.List(response.Id).Result.Items;
 
@@ -62,6 +62,7 @@ namespace Web.Api.Core.UseCases
 
                     await repository.Update(jobItem, jobItemStatus);
 
+                    jobItem.Status = jobItemStatus;
 
                     await repository.Log(jobItem, message.Type);
 
@@ -71,7 +72,7 @@ namespace Web.Api.Core.UseCases
                     }
                 }
 
-            });*/
+            });
 
 
             outputPort.Handle(response.Success ? new StartJobUseCaseResponse(response.Id, true) : new StartJobUseCaseResponse(response.Errors.Select(e => e.Description)));

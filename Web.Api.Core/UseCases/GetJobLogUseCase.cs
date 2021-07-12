@@ -23,7 +23,7 @@ namespace Web.Api.Core.UseCases
             var response = await _jobLogRepository.List(message.JobId);
 
             
-            outputPort.Handle(response.Success ? new GetJobLogUseCaseResponse(response.Items) : new GetJobLogUseCaseResponse(response.Errors.Select(e => e.Description)));
+            outputPort.Handle(response.Success ? new GetJobLogUseCaseResponse(response.Items, true) : new GetJobLogUseCaseResponse(response.Errors.Select(e => e.Description)));
             return response.Success;
         }
     }

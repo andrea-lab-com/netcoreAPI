@@ -20,7 +20,7 @@ namespace Web.Api.Infrastructure.Data.Mapping
             CreateMap<JobItemEntity, JobItem>().ConstructUsing(au => new JobItem(au.JobId, au.DataSourceUrl, (JobItemStatus) au.Status, au.Id));
 
 
-            CreateMap<JobLogEntity, JobLog>().ConstructUsing(au => new JobLog(au.JobId, (JobType)au.JobType,au.JobItemId,  au.DataSourceUrl,au.Error,  (JobItemStatus)au.Status, au.Id));
+            CreateMap<JobLogEntity, JobLog>().ConstructUsing(au => new JobLog(au.JobId, (JobType)au.JobType,au.JobItemId,  au.DataSourceUrl,au.Error,  (JobItemStatus)au.Status, au.Created, au.Id));
 
         }
     }
