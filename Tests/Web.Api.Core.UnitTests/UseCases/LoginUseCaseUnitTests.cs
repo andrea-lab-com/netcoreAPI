@@ -30,7 +30,7 @@ namespace Web.Api.Core.UnitTests.UseCases
             var mockJwtFactory = new Mock<IJwtFactory>();
             mockJwtFactory
                 .Setup(repo => repo.GenerateEncodedToken(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task.FromResult(new Token("", "", 0)));
+                .Returns(Task.FromResult(new Token("", "")));
 
             var useCase = new LoginUseCase(mockUserRepository.Object, mockJwtFactory.Object);
 
@@ -60,7 +60,7 @@ namespace Web.Api.Core.UnitTests.UseCases
             var mockJwtFactory = new Mock<IJwtFactory>();
             mockJwtFactory
                 .Setup(repo => repo.GenerateEncodedToken(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task.FromResult(new Token("", "", 0)));
+                .Returns(Task.FromResult(new Token("", "")));
 
             var useCase = new LoginUseCase(mockUserRepository.Object, mockJwtFactory.Object);
 
@@ -91,7 +91,7 @@ namespace Web.Api.Core.UnitTests.UseCases
             var mockJwtFactory = new Mock<IJwtFactory>();
             mockJwtFactory
                 .Setup(repo => repo.GenerateEncodedToken(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task.FromResult(new Token("", "", 0)));
+                .Returns(Task.FromResult(new Token("", "")));
 
             var useCase = new LoginUseCase(mockUserRepository.Object, mockJwtFactory.Object);
 
@@ -121,7 +121,7 @@ namespace Web.Api.Core.UnitTests.UseCases
             var mockJwtFactory = new Mock<IJwtFactory>();
             mockJwtFactory
                 .Setup(repo => repo.GenerateEncodedToken(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task.FromResult(new Token("", "", 0)));
+                .Returns(Task.FromResult(new Token("", "")));
 
             var useCase = new LoginUseCase(mockUserRepository.Object, mockJwtFactory.Object);
 

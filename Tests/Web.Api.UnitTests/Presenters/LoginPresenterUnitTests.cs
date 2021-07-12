@@ -18,7 +18,7 @@ namespace Web.Api.UnitTests.Presenters
             var presenter = new LoginPresenter();
 
             // act
-            presenter.Handle(new LoginResponse(new Token("", "", 0), true));
+            presenter.Handle(new LoginResponse(new Token("", ""), true));
 
             // assert
             Assert.Equal((int)HttpStatusCode.OK, presenter.ContentResult.StatusCode);
@@ -32,7 +32,7 @@ namespace Web.Api.UnitTests.Presenters
             var presenter = new LoginPresenter();
 
             // act
-            presenter.Handle(new LoginResponse(new Token("1", authToken, 0), true));
+            presenter.Handle(new LoginResponse(new Token("1", authToken), true));
 
             // assert
             dynamic data = JsonConvert.DeserializeObject(presenter.ContentResult.Content);

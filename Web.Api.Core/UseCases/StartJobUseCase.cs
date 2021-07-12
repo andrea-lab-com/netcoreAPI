@@ -42,6 +42,7 @@ namespace Web.Api.Core.UseCases
 
 
             // Delegate the launch JobItem to another task on the threadpool
+            if(_fireForgetRepositoryHandler!= null)
             _fireForgetRepositoryHandler.Execute(async repository =>
             {
                 var listItems =  repository.List(response.Id).Result.Items;
