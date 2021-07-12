@@ -11,7 +11,8 @@ namespace Web.Api.Core
       builder.RegisterType<RegisterUserUseCase>().As<IRegisterUserUseCase>().InstancePerLifetimeScope();
       builder.RegisterType<LoginUseCase>().As<ILoginUseCase>().InstancePerLifetimeScope();
       builder.RegisterType<StartJobUseCase>().As<IStartJobUseCase>().InstancePerLifetimeScope();
-            builder.RegisterType<CheckStatusUseCase>().As<ICheckStatusUseCase>().InstancePerLifetimeScope();
+      builder.RegisterType<CheckStatusUseCase>().As<ICheckStatusUseCase>().InstancePerLifetimeScope();
+      builder.RegisterType<GetJobLogUseCase>().As<IGetJobLogUseCase>().InstancePerLifetimeScope();
         }
   }
 }

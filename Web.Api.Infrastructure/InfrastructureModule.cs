@@ -16,6 +16,7 @@ namespace Web.Api.Infrastructure
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
             builder.RegisterType<JobRepository>().As<IJobRepository>().InstancePerLifetimeScope();
             builder.RegisterType<JobItemRepository>().As<IJobItemRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<JobLogRepository>().As<IJobLogRepository>().InstancePerLifetimeScope();
             builder.RegisterType<JwtFactory>().As<IJwtFactory>().SingleInstance();
         }
     }

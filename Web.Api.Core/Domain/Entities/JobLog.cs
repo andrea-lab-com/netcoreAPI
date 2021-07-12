@@ -3,21 +3,23 @@ using Web.Api.Core.Domain.Enums;
 
 namespace Web.Api.Core.Domain.Entities
 {
-    public class JobItemLog
+    public class JobLog
     {
         public int Id { get; }
         public int JobId { get; }
+        public JobType JobType { get; }
         public int JobItemId { get; }
         public string DataSourceUrl { get; }
-        public string Description { get; }
+        public string Error { get; }
         public JobItemStatus JobItemStatus { get; }
-        internal JobItemLog(int jobId, int jobItemId, string dataSourceUrl, string description, JobItemStatus jobItemStatus, int id = 0)
+        internal JobLog(int jobId, JobType jobType, int jobItemId, string dataSourceUrl, string error, JobItemStatus jobItemStatus, int id = 0)
         {
             Id = id;
             JobId = jobId;
+            JobType = jobType;
             JobItemId = jobItemId;
             DataSourceUrl = dataSourceUrl;
-            Description = description;
+            Error = error;
             JobItemStatus = jobItemStatus;
         }
     }

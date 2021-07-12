@@ -29,8 +29,20 @@ namespace Web.Api.Core.UseCases
         {
             var response = await _jobRepository.Create(new Job(message.Type, message.Items));
 
+            foreach (JobItem jobItem in message.Items)
+            {
+                jobItem.JobId = response.Id;
+
+                var responseJobItem = await _jobItemRepository.Create(jobItem);
+
+                await _jobItemRepository.Log(new JobItem(jobItem.JobId, jobItem.DataSourceUrl, jobItem.Status, responseJobItem.Id), message.Type);
+
+            }
+
+
+
             // Delegate the launch JobItem to another task on the threadpool
-            _fireForgetRepositoryHandler.Execute(async repository =>
+           /* _fireForgetRepositoryHandler.Execute(async repository =>
             {
                 var listItems =  repository.List(response.Id).Result.Items;
 
@@ -50,13 +62,16 @@ namespace Web.Api.Core.UseCases
 
                     await repository.Update(jobItem, jobItemStatus);
 
+
+                    await repository.Log(jobItem, message.Type);
+
                     if (jobItemStatus == Domain.Enums.JobItemStatus.FAILED && message.Type == Domain.Enums.JobType.BATCH)
                     {
                         break;
                     }
                 }
 
-            });
+            });*/
 
 
             outputPort.Handle(response.Success ? new StartJobUseCaseResponse(response.Id, true) : new StartJobUseCaseResponse(response.Errors.Select(e => e.Description)));

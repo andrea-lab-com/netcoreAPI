@@ -19,6 +19,7 @@ namespace Web.Api.Infrastructure.Data.EntityFramework
         public DbSet<JobEntity> Jobs { get; set; }
 
         public DbSet<JobItemEntity> JobItems { get; set; }
+        public DbSet<JobLogEntity> JobLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -37,6 +38,27 @@ namespace Web.Api.Infrastructure.Data.EntityFramework
                     .IsRequired();
 
                 entity.Property(e => e.JobId)
+                    .IsRequired();
+            });
+
+            builder.Entity<JobLogEntity>(entity =>
+            {
+                entity.Property(e => e.JobId)
+                    .IsRequired();
+
+                entity.Property(e => e.JobType)
+                    .IsRequired();
+
+                entity.Property(e => e.JobItemId)
+                    .IsRequired();
+
+                entity.Property(e => e.DataSourceUrl)
+                    .IsRequired();
+
+                entity.Property(e => e.Status)
+                    .IsRequired();
+
+                entity.Property(e => e.Error)
                     .IsRequired();
             });
 

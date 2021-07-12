@@ -20,15 +20,29 @@ namespace Web.Api.Controllers
         private readonly ICheckStatusUseCase _checkStatusUseCase;
         private readonly CheckStatusPresenter _checkStatusPresenter;
 
+
+        private readonly IGetJobLogUseCase _getJobLogUseCase;
+        private readonly GetJobLogPresenter _getJobLogPresenter;
+
         private readonly IMapper _mapper;
 
-        public JobsController(IStartJobUseCase StartJobUseCase, StartJobPresenter StartJobPresenter, ICheckStatusUseCase CheckStatusUseCase, CheckStatusPresenter CheckStatusPresenter, IMapper mapper)
+        public JobsController(  IStartJobUseCase StartJobUseCase,
+                                StartJobPresenter StartJobPresenter, 
+                                ICheckStatusUseCase CheckStatusUseCase, 
+                                CheckStatusPresenter CheckStatusPresenter,
+                                IGetJobLogUseCase GetJobLogUseCase,
+                                GetJobLogPresenter GetJobLogPresenter,
+                                IMapper mapper)
         {
             _startJobUseCase = StartJobUseCase;
             _startJobPresenter = StartJobPresenter;
 
             _checkStatusUseCase = CheckStatusUseCase;
             _checkStatusPresenter = CheckStatusPresenter;
+
+
+            _getJobLogUseCase = GetJobLogUseCase;
+            _getJobLogPresenter = GetJobLogPresenter;
 
             _mapper = mapper;
         }
@@ -49,7 +63,7 @@ namespace Web.Api.Controllers
             return _startJobPresenter.ContentResult;
         }
 
-        // POST api/Jobs/{id}
+        // GET api/Jobs/{id}
         [HttpGet("{jobId}")]
         public async Task<ActionResult> CheckStatusJobAsync(int jobId)
         {
@@ -58,6 +72,17 @@ namespace Web.Api.Controllers
 
             return _checkStatusPresenter.ContentResult;
         }
+
+        // GET api/Jobs/Logs/{id}
+        [HttpGet("Logs/{jobId}")]
+        public async Task<ActionResult> GetJobLogsAsync(int jobId)
+        {
+
+            await _getJobLogUseCase.Handle(new GetJobLogUseCaseRequest(jobId), _getJobLogPresenter);
+
+            return _getJobLogPresenter.ContentResult;
+        }
+
 
     }
 }

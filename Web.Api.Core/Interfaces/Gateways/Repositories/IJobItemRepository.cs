@@ -10,7 +10,9 @@ namespace Web.Api.Core.Interfaces.Gateways.Repositories
 
         Task<ListJobItemResponse> List(int jobId);
 
+        Task<CreateItemJobResponse> Create(JobItem jobItem);
         Task<UpdateJobItemResponse> Update(JobItem jobItem, JobItemStatus jobItemStatus);
+        Task<CreateJobLogResponse> Log(JobItem jobItem, JobType jobType);
 
     }
 }

@@ -35,7 +35,6 @@ namespace Web.Api.Infrastructure.Data.EntityFramework.Repositories
 
             var items = _mapper.Map<List<JobItem>>(result);
 
-
             return new ListJobItemResponse(items, errors.Count == 0, errors.Count == 0 ? null : errors);
         }
 
@@ -45,18 +44,56 @@ namespace Web.Api.Infrastructure.Data.EntityFramework.Repositories
 
             var errors = new List<Error>();
 
+
             var entity = _applicationDbContext.JobItems.FirstOrDefault(item => item.Id == jobItem.Id);
 
             if (entity != null)
             {
                 entity.Status = (int)jobItemStatus;
                 _applicationDbContext.SaveChanges();
-
+                
             } else {
                 errors.Add(new Error("E002", "JobItem not found"));
 
             }
             return new UpdateJobItemResponse(entity.Id, errors.Count == 0, errors.Count == 0 ? null : errors);
         }
+
+
+        public async Task<CreateJobLogResponse> Log(JobItem jobItem, JobType jobType)
+        {
+
+            var errors = new List<Error>();
+
+            var entity = new JobLogEntity(0, jobItem.JobId, jobItem.Id, (int)jobItem.Status, jobItem.DataSourceUrl, (int)jobType, "");
+            var result = _applicationDbContext.JobLogs.Add(entity);
+
+            try
+            {
+                _applicationDbContext.SaveChanges();
+
+
+            }
+            catch (Exception e)
+            {
+                errors.Add(new Error("E001", "Job isn't be added"));
+            }
+
+            return new CreateJobLogResponse(entity.Id, errors.Count == 0, errors.Count == 0 ? null : errors);
+        }
+
+        public async Task<CreateItemJobResponse> Create(JobItem jobItem)
+        {
+
+            var errors = new List<Error>();
+            var jobItemEntity = _mapper.Map<JobItemEntity>(jobItem);
+            var result = _applicationDbContext.JobItems.Add(jobItemEntity);
+
+            _applicationDbContext.SaveChanges();
+
+            return new CreateItemJobResponse(jobItemEntity.Id, errors.Count == 0, errors.Count == 0 ? null : errors);
+        }
+
+
     }
 }
