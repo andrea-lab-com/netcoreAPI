@@ -47,10 +47,10 @@ namespace Web.Api
         {
             // Add framework services.
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //   options.UseInMemoryDatabase("ApplicationDb"));
+            services.AddDbContext<ApplicationDbContext>(options =>
+              options.UseInMemoryDatabase("ApplicationDb"));
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), b => b.MigrationsAssembly("Web.Api.Infrastructure")));
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), b => b.MigrationsAssembly("Web.Api.Infrastructure")));
 
             // jwt wire up
             // Get options from app settings
