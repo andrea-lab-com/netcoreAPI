@@ -2,11 +2,11 @@
 
 namespace Web.Api.Presenters
 {
-  public sealed class JsonContentResult : ContentResult
-  {
-    public JsonContentResult()
+    public sealed class JsonContentResult : ContentResult
     {
-      ContentType = "application/json";
+        public JsonContentResult()
+        {
+            ContentType = "application/json";
+        }
     }
-  }
 }

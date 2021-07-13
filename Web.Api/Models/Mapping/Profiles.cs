@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Web.Api.Core.Domain.Entities;
-using Web.Api.Infrastructure.Data.Entities;
-using Web.Api.Infrastructure.Data.EntityFramework.Entities;
 using Web.Api.Models.Request;
 
 namespace Web.Api.Models.Mapping

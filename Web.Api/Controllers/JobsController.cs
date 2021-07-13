@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Web.Api.Core.Domain.Entities;
 using Web.Api.Core.Dto.UseCaseRequests;
 using Web.Api.Core.Interfaces.UseCases;
-using Web.Api.Models.Request;
 using Web.Api.Presenters;
 
 namespace Web.Api.Controllers
@@ -28,9 +27,9 @@ namespace Web.Api.Controllers
 
         private readonly IMapper _mapper;
 
-        public JobsController(  IStartJobUseCase StartJobUseCase,
-                                StartJobPresenter StartJobPresenter, 
-                                ICheckStatusUseCase CheckStatusUseCase, 
+        public JobsController(IStartJobUseCase StartJobUseCase,
+                                StartJobPresenter StartJobPresenter,
+                                ICheckStatusUseCase CheckStatusUseCase,
                                 CheckStatusPresenter CheckStatusPresenter,
                                 IGetJobLogUseCase GetJobLogUseCase,
                                 GetJobLogPresenter GetJobLogPresenter,

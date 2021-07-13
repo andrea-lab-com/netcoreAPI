@@ -8,13 +8,13 @@ using Web.Api.Core.Domain.Enums;
 
 namespace Web.Api.Models.Request
 {
-  public class StartJobRequest
-  {
-    [JsonConverter(typeof(StringEnumConverter))]
-    [Required]
-    public JobType Type { get; set; }
+    public class StartJobRequest
+    {
+        [JsonConverter(typeof(StringEnumConverter))]
+        [Required]
+        public JobType Type { get; set; }
 
-    [Required]
-    public List<JobItemRequest> Items { get; set; }
-  }
+        [Required]
+        public List<JobItemRequest> Items { get; set; }
+    }
 }
