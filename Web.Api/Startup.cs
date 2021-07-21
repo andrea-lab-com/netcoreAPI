@@ -160,8 +160,6 @@ namespace Web.Api
             builder.RegisterModule(new InfrastructureModule());
 
             // Presenters
-            builder.RegisterType<RegisterUserPresenter>().SingleInstance();
-            builder.RegisterType<StartJobPresenter>().SingleInstance();
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(t => t.Name.EndsWith("Presenter")).SingleInstance();
 
             builder.Populate(services);
